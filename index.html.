@@ -1,0 +1,316 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AnimeVerse | JJK</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #211b35, #302442, #202b45);
+  color: #f4f0ff;
+  min-height: 100vh;
+}
+
+header {
+  text-align: center;
+  padding: 30px 15px;
+  background: linear-gradient(110deg, #40345f, #394b70);
+  border-bottom: 1px solid #75649a;
+}
+
+header h1 {
+  color: #d0bdff;
+  font-size: 34px;
+  margin: 0 0 8px;
+}
+
+header p {
+  color: #e2d9f7;
+  margin: 0;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+}
+
+input, select {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #75649a;
+  background: #352b50;
+  color: white;
+  font-size: 15px;
+}
+
+input::placeholder {
+  color: #c6b9dc;
+}
+
+button {
+  background: #718cff;
+  color: white;
+  border: none;
+  padding: 11px 17px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #91a5ff;
+}
+
+#characters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 18px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.card {
+  background: #352b50;
+  border: 1px solid #62517d;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  border-color: #c5b2ff;
+}
+
+.card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  background: #46385f;
+}
+
+.card h3 {
+  color: #d0bdff;
+  padding: 0 12px;
+}
+
+.card p {
+  color: #d8cde9;
+  padding: 0 12px 12px;
+  font-size: 14px;
+}
+
+#profile {
+  display: none;
+  max-width: 850px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #352b50;
+  border: 1px solid #75649a;
+  border-radius: 18px;
+}
+
+#profile img {
+  width: 100%;
+  max-width: 280px;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 14px;
+  display: block;
+  margin: 15px auto;
+  background: #46385f;
+}
+
+#profile h2 {
+  text-align: center;
+  color: #d0bdff;
+}
+
+#profile p {
+  line-height: 1.7;
+  color: #eee7fa;
+}
+
+#profile strong {
+  color: #f29bcb;
+}
+
+.back {
+  background: #a77bd5;
+}
+
+footer {
+  text-align: center;
+  padding: 25px;
+  color: #c6b9dc;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>✦ AnimeVerse ✦</h1>
+  <p>Explore the world of Jujutsu Kaisen</p>
+</header>
+
+<div class="controls">
+  <input id="search" placeholder="🔍 Search characters...">
+  <select id="power">
+    <option value="all">All Power Levels</option>
+    <option value="90">90+ Power</option>
+    <option value="80">80+ Power</option>
+    <option value="70">70+ Power</option>
+    <option value="60">60+ Power</option>
+  </select>
+  <select id="sort">
+    <option value="high">Strongest first</option>
+    <option value="low">Weakest first</option>
+    <option value="az">Name A–Z</option>
+  </select>
+</div>
+
+<div id="characters"></div>
+
+<div id="profile">
+  <button class="back" onclick="goBack()">← Back to characters</button>
+  <img id="profileImg" alt="Character picture">
+  <h2 id="profileName"></h2>
+  <div id="profileInfo"></div>
+</div>
+
+<footer>AnimeVerse © 2026 | JJK Character Encyclopedia</footer>
+
+<script>
+const characters = [
+{name:"Satoru Gojo",age:"28",power:100,role:"Jujutsu Sorcerer",technique:"Limitless and Six Eyes",attack:"Hollow Purple",domain:"Unlimited Void",desc:"One of the strongest modern sorcerers."},
+{name:"Ryomen Sukuna",age:"Unknown",power:100,role:"King of Curses",technique:"Shrine",attack:"Malevolent Shrine",domain:"Malevolent Shrine",desc:"The legendary King of Curses."},
+{name:"Yuta Okkotsu",age:"17",power:95,role:"Special Grade Sorcerer",technique:"Copy",attack:"Rika and copied techniques",domain:"Authentic Mutual Love",desc:"A powerful sorcerer with immense cursed energy."},
+{name:"Kenjaku",age:"Unknown",power:94,role:"Ancient Sorcerer",technique:"Body hopping",attack:"Cursed Spirit Manipulation",domain:"Womb Profusion",desc:"An ancient sorcerer with many plans."},
+{name:"Yuki Tsukumo",age:"Unknown",power:92,role:"Special Grade Sorcerer",technique:"Star Rage",attack:"Virtual Mass",domain:"Unknown",desc:"One of the special grade sorcerers."},
+{name:"Maki Zenin",age:"16",power:89,role:"Sorcerer",technique:"Heavenly Restriction",attack:"Physical combat",domain:"None",desc:"A remarkable fighter with extraordinary physical abilities."},
+{name:"Toji Fushiguro",age:"Unknown",power:89,role:"Sorcerer Killer",technique:"Heavenly Restriction",attack:"Physical combat",domain:"None",desc:"A highly skilled fighter with no cursed energy."},
+{name:"Hajime Kashimo",age:"Unknown",power:88,role:"Ancient Sorcerer",technique:"Mythical Beast Amber",attack:"Electric cursed energy",domain:"Unknown",desc:"A powerful ancient sorcerer."},
+{name:"Kinji Hakari",age:"18",power:87,role:"Jujutsu Student",technique:"Private Pure Love Train",attack:"Jackpot",domain:"Idle Death Gamble",desc:"His domain grants a powerful jackpot state."},
+{name:"Mahoraga",age:"Unknown",power:87,role:"Shikigami",technique:"Adaptation",attack:"Adaptation wheel",domain:"None",desc:"A powerful shikigami known for adapting to attacks."},
+{name:"Suguru Geto",age:"27",power:86,role:"Special Grade Sorcerer",technique:"Cursed Spirit Manipulation",attack:"Maximum Uzumaki",domain:"Unknown",desc:"A former sorcerer with powerful cursed spirits."},
+{name:"Jogo",age:"Unknown",power:85,role:"Disaster Curse",technique:"Volcanic abilities",attack:"Maximum Meteor",domain:"Coffin of the Iron Mountain",desc:"A powerful disaster curse."},
+{name:"Mahito",age:"Unknown",power:84,role:"Disaster Curse",technique:"Idle Transfiguration",attack:"Soul manipulation",domain:"Self-Embodiment of Perfection",desc:"A curse who can manipulate souls."},
+{name:"Yuji Itadori",age:"15",power:83,role:"Jujutsu Student",technique:"Divergent Fist and Shrine",attack:"Black Flash",domain:"Unknown",desc:"A determined fighter with extraordinary physical strength."},
+{name:"Toji's Son - Megumi Fushiguro",age:"15",power:82,role:"Jujutsu Student",technique:"Ten Shadows",attack:"Mahoraga summoning",domain:"Chimera Shadow Garden",desc:"A talented user of the Ten Shadows Technique."},
+{name:"Choso",age:"150+ (appearance)",power:80,role:"Death Painting Womb",technique:"Blood Manipulation",attack:"Piercing Blood",domain:"Unknown",desc:"A powerful fighter who uses blood manipulation."},
+{name:"Naoya Zenin",age:"27",power:79,role:"Zenin Clan",technique:"Projection Sorcery",attack:"Projection Sorcery",domain:"Time Cell Moon Palace",desc:"A fast and dangerous fighter."},
+{name:"Aoi Todo",age:"18",power:78,role:"Jujutsu Sorcerer",technique:"Boogie Woogie",attack:"Clapping swap",domain:"Unknown",desc:"A powerful fighter with a clever technique."},
+{name:"Kento Nanami",age:"27",power:77,role:"Jujutsu Sorcerer",technique:"Ratio Technique",attack:"Collapse",domain:"None",desc:"A disciplined and experienced sorcerer."},
+{name:"Takuma Ino",age:"21",power:65,role:"Jujutsu Sorcerer",technique:"Auspicious Beasts",attack:"Four Auspicious Beasts",domain:"None",desc:"A grade 2 sorcerer."},
+{name:"Nobara Kugisaki",age:"16",power:64,role:"Jujutsu Student",technique:"Straw Doll Technique",attack:"Resonance",domain:"Unknown",desc:"A confident fighter who uses a hammer and nails."},
+{name:"Panda",age:"Unknown",power:63,role:"Cursed Corpse",technique:"Cursed Corpse cores",attack:"Gorilla mode",domain:"None",desc:"A unique cursed corpse."},
+{name:"Toge Inumaki",age:"17",power:62,role:"Jujutsu Student",technique:"Cursed Speech",attack:"Cursed commands",domain:"None",desc:"A sorcerer who uses powerful speech techniques."},
+{name:"Mei Mei",age:"Unknown",power:74,role:"Jujutsu Sorcerer",technique:"Black Bird Manipulation",attack:"Bird Strike",domain:"None",desc:"A skilled Grade 1 sorcerer."},
+{name:"Atsuya Kusakabe",age:"Unknown",power:73,role:"Jujutsu Sorcerer",technique:"New Shadow Style",attack:"Simple Domain",domain:"None",desc:"A skilled Grade 1 sorcerer."},
+{name:"Miwa Kasumi",age:"17",power:48,role:"Jujutsu Student",technique:"New Shadow Style",attack:"Simple Domain",domain:"None",desc:"A student from Kyoto Jujutsu High."},
+{name:"Momo Nishimiya",age:"18",power:45,role:"Jujutsu Student",technique:"Tool Manipulation",attack:"Broom flight",domain:"None",desc:"A Kyoto student who uses a flying broom."},
+{name:"Mai Zenin",age:"16",power:44,role:"Jujutsu Student",technique:"Construction",attack:"Revolver",domain:"None",desc:"A Kyoto student from the Zenin clan."},
+{name:"Arata Nitta",age:"Unknown",power:40,role:"Jujutsu Student",technique:"Pain suppression",attack:"Support technique",domain:"None",desc:"A support-focused sorcerer."},
+{name:"Junpei Yoshino",age:"17",power:38,role:"Student",technique:"Moon Dregs",attack:"Poison jellyfish shikigami",domain:"None",desc:"A student who briefly became involved with curses."}
+];
+
+const fallback = "https://placehold.co/400x500/46385f/f4f0ff?text=JJK+Character";
+
+async function getImage(name) {
+  try {
+    const query = `
+      query {
+        Media(search: "${name}", type: ANIME) {
+          coverImage { large }
+        }
+      }`;
+    const response = await fetch("https://graphql.anilist.co", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({query})
+    });
+    const data = await response.json();
+    return data.data?.Media?.coverImage?.large || fallback;
+  } catch(e) {
+    return fallback;
+  }
+}
+
+async function loadImages() {
+  for (const character of characters) {
+    character.image = await getImage(character.name);
+  }
+  render();
+}
+
+function render() {
+  const search = document.getElementById("search").value.toLowerCase();
+  const power = document.getElementById("power").value;
+  const sort = document.getElementById("sort").value;
+
+  let list = characters.filter(c =>
+    c.name.toLowerCase().includes(search) &&
+    (power === "all" || c.power >= Number(power))
+  );
+
+  if(sort === "high") list.sort((a,b)=>b.power-a.power);
+  if(sort === "low") list.sort((a,b)=>a.power-b.power);
+  if(sort === "az") list.sort((a,b)=>a.name.localeCompare(b.name));
+
+  document.getElementById("characters").innerHTML = list.map(c => `
+    <div class="card" onclick="openProfile('${c.name.replace(/'/g,"\\'")}')">
+      <img src="${c.image || fallback}" alt="${c.name}">
+      <h3>${c.name}</h3>
+      <p>Power score: ${c.power}/100</p>
+    </div>
+  `).join("") || "<p>No characters found.</p>";
+}
+
+function openProfile(name) {
+  const c = characters.find(x => x.name === name);
+  document.getElementById("characters").style.display = "none";
+  document.querySelector(".controls").style.display = "none";
+  document.getElementById("profile").style.display = "block";
+  document.getElementById("profileImg").src = c.image || fallback;
+  document.getElementById("profileName").textContent = c.name;
+  document.getElementById("profileInfo").innerHTML = `
+    <p><strong>Age:</strong> ${c.age}</p>
+    <p><strong>Role:</strong> ${c.role}</p>
+    <p><strong>Power score:</strong> ${c.power}/100 (fan estimate)</p>
+    <p><strong>Technique:</strong> ${c.technique}</p>
+    <p><strong>Signature attack:</strong> ${c.attack}</p>
+    <p><strong>Domain Expansion:</strong> ${c.domain}</p>
+    <p><strong>About:</strong> ${c.desc}</p>
+  `;
+}
+
+function goBack() {
+  document.getElementById("profile").style.display = "none";
+  document.getElementById("characters").style.display = "grid";
+  document.querySelector(".controls").style.display = "flex";
+}
+
+document.getElementById("search").addEventListener("input",render);
+document.getElementById("power").addEventListener("change",render);
+document.getElementById("sort").addEventListener("change",render);
+
+render();
+loadImages();
+</script>
+
+</body>
+</html>
